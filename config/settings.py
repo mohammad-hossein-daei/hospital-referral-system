@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-_&8stw*+b!ft&@m$a+^$+2dctj6axpnbq0!(0%upij!fal-4v)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,10 +37,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+    'corsheaders',   
+    
+    'accounts',
+    'core',
+    'referrals',
+    'reports',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -124,8 +133,25 @@ STATIC_URL = 'static/'
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React
+    "http://localhost:8080",  # Vue
+]
+CORS_ALLOW_CREDENTIALS = True
+
+AUTH_USER_MODEL = 'accounts.User'
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+#LOGOUT_REDIRECT_URL = '/accounts/login/'
