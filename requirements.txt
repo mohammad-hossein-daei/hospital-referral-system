@@ -1,3 +1,4 @@
 Django
 psycopg[binary]
 djangorestframework
+django-cors-headers
