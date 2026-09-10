@@ -1,24 +1,51 @@
 services:
+
   db:
     image: postgres:17
+    container_name: hospital-db
+
     environment:
       POSTGRES_DB: hospital_db
       POSTGRES_USER: hospital_user
       POSTGRES_PASSWORD: hospital_password
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
     ports:
       - "5432:5432"
 
-  web:
-    build: .
+
+  backend:
+    build: ./backend
+    container_name: hospital-backend
+
     command: python manage.py runserver 0.0.0.0:8000
+
     volumes:
-      - .:/app
+      - ./backend:/app
+
     ports:
       - "8000:8000"
+
     depends_on:
       - db
+
+
+  frontend:
+    build: ./frontend
+    container_name: hospital-frontend
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - backend
+
 
 volumes:
   postgres_data:
