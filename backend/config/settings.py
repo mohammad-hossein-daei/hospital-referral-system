@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-_&8stw*+b!ft&@m$a+^$+2dctj6axpnbq0!(0%upij!fal-4v)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend', 'your-domain.com']
 
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -135,21 +136,6 @@ STATIC_URL = 'static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-}
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React
-    "http://localhost:8080",  # Vue
-]
-CORS_ALLOW_CREDENTIALS = True
-
 AUTH_USER_MODEL = 'accounts.User'
 
 LOGIN_URL = '/accounts/login/'
@@ -157,4 +143,32 @@ LOGIN_REDIRECT_URL = '/'
 #LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:8080",
+    "http://localhost:5173",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.NationalCodeBackend',      # اول
+    'django.contrib.auth.backends.ModelBackend',  # دوم
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    # این خط باعث می‌شود پاسخ unauthenticated با 401 برگردد
+    'EXCEPTION_HANDLER': 'accounts.exceptions.custom_exception_handler',
+
+}
