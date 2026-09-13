@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',   
-    
+    'drf_spectacular',
+        
     'accounts',
     'core',
     'referrals',
@@ -170,5 +171,6 @@ REST_FRAMEWORK = {
     ],
     # این خط باعث می‌شود پاسخ unauthenticated با 401 برگردد
     'EXCEPTION_HANDLER': 'accounts.exceptions.custom_exception_handler',
-
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
