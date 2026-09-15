@@ -3,3 +3,4 @@ psycopg[binary]
 djangorestframework
 django-cors-headers
 drf-spectacular 
+djangorestframework-simplejwt==5.3.1
