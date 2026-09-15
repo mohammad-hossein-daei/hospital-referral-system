@@ -23,10 +23,11 @@ class RoleRedirectMixin:
     """
 
     def get_redirect_url(self, user):
-        # سوپرادمین → ادمین جنگو
-        if user.is_superuser:
+        # سوپریوزر واقعی جنگو (Developer/System) → ادمین جنگو
+        if user.is_superuser and user.is_staff:
             return '/admin/'
 
+        # سوپریوزر React Admin (is_staff=False) یا بقیه نقش‌ها
         redirect_urls = {
             User.Role.ADMIN: '/admin/dashboard/',
             User.Role.RECEPTION: '/reception/dashboard/',
@@ -36,8 +37,8 @@ class RoleRedirectMixin:
         return redirect_urls.get(user.role, '/')
 
     def get_dashboard_type(self, user):
-        # سوپرادمین → ادمین جنگو
-        if user.is_superuser:
+        # سوپریوزر واقعی جنگو (Developer/System) → ادمین جنگو
+        if user.is_superuser and user.is_staff:
             return 'django-admin'
 
         dashboard_types = {

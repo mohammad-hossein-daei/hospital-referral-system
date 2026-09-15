@@ -79,8 +79,8 @@ class LoginSerializer(serializers.Serializer):
         """
         تعیین مسیر هدایت بر اساس نقش و وضعیت سوپرادمین
         """
-        # سوپرادمین → ادمین جنگو
-        if user.is_superuser:
+        # سوپریوزر واقعی جنگو (Developer/System) → ادمین جنگو
+        if user.is_superuser and user.is_staff:
             return '/admin/'
 
         redirect_urls = {
@@ -95,8 +95,8 @@ class LoginSerializer(serializers.Serializer):
         """
         تعیین نوع داشبورد بر اساس نقش و وضعیت سوپرادمین
         """
-        # سوپرادمین → ادمین جنگو
-        if user.is_superuser:
+        # سوپریوزر واقعی جنگو (Developer/System) → ادمین جنگو
+        if user.is_superuser and user.is_staff:
             return 'django-admin'
 
         dashboard_types = {

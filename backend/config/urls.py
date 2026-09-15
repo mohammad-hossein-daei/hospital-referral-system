@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/csrf/', csrf_view, name='csrf'),
     path('', include('accounts.urls')),
+    path('', include('core.urls')),
     path('', include('referrals.urls')),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
