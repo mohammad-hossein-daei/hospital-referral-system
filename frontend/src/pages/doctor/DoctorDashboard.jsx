@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { Icon, RecentReferralsPanel, useApp } from "../../components/PrototypeApp.jsx";
 import { authService } from "../../services/authService.js";
 
-export default function DashboardPage({ user }) {
+export default function DashboardPage({ user, referrals }) {
   const { t } = useApp();
-  const [referrals, setReferrals] = useState([]);
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,15 +13,9 @@ export default function DashboardPage({ user }) {
     try {
       setLoading(true);
       setError(null);
-
-      // هر دو API را همزمان بگیر
-      const [patientsData, referralsData] = await Promise.all([
-        authService.doctorPatients(),
-        authService.doctorReferrals(),
-      ]);
-
+      const patientsData = await authService.doctorPatients();
       setPatients(patientsData.patients || []);
-      setReferrals(referralsData.referrals || []);
+
     } catch (err) {
       console.error(err);
       setError(err.message || "خطا در دریافت اطلاعات");

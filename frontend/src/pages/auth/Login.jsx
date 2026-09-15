@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Icon, PreviewCard, TogglesInline, useApp } from '../../components/PrototypeApp.jsx';
 import { authService } from '../../services/authService.js';
 
@@ -11,10 +11,6 @@ export default function Login({ onLogin, showToast }) {
   const [errs, setErrs] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // یک بار هنگام باز شدن صفحه، CSRF توکن بگیر
-  useEffect(() => {
-    authService.getCsrf();
-  }, []);
 
   const submit = async (event) => {
     event.preventDefault();
@@ -42,7 +38,6 @@ export default function Login({ onLogin, showToast }) {
         role: result.user.role === 'reception' ? 'admission' : result.user.role,
       };
     
-      sessionStorage.setItem('csrf_token', result.csrf_token);
       showToast(result.message, 'success');
     
       // ─── سوپرادمین → فقط ادمین جنگو، بدون onLogin ───
